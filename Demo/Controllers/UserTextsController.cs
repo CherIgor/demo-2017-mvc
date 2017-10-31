@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Mvc;
-using Demo.Models;
 using Demo.Services.Services;
+using Demo.ViewModels;
 
 namespace Demo.Controllers
 {
@@ -12,7 +12,7 @@ namespace Demo.Controllers
         {
             var res = new UserTextsViewModel
             {
-                OldUserTexts = await UsersService.GetUserTexts(),
+                StoredUserTexts = await UsersService.GetUserTexts(),
                 NewUserText = new UserTextViewModel()
             };
 
@@ -37,7 +37,7 @@ namespace Demo.Controllers
 
             var res = new UserTextsViewModel
             {
-                OldUserTexts = await UsersService.GetUserTexts(),
+                StoredUserTexts = await UsersService.GetUserTexts(),
                 NewUserText = ModelState.IsValid ? new UserTextViewModel() : model
             };
 

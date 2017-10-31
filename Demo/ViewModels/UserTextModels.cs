@@ -2,13 +2,12 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Demo.Services.Models;
-using Microsoft.Ajax.Utilities;
 
-namespace Demo.Models
+namespace Demo.ViewModels
 {
     public class UserTextsViewModel
     {
-        public IEnumerable<UserTextModel> OldUserTexts;
+        public IEnumerable<UserTextModel> StoredUserTexts;
 
         public UserTextViewModel NewUserText;
     }

@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "User texts";
 }
-@model Demo.Models.UserTextsViewModel
+@model Demo.ViewModels.UserTextsViewModel
 
 @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
@@ -28,7 +28,7 @@
 }
 
 <div>
-@foreach (var item in Model.OldUserTexts)
+@foreach (var item in Model.StoredUserTexts)
 {
     <div class="">
         <hr />
