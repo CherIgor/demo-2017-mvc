@@ -20,14 +20,17 @@ namespace Demo.Services.Services
             return res;
         }
 
-        public static async Task AddUserTextAsync(UserTextModel model)
+        public static async Task AddUserTextAsync(UserTextModel model, bool checkUniqueUserName)
         {
             var context = new Entities();
 
-            var nameLowercased = model.Name.ToLower();
-            if (await context.UserTexts.AsNoTracking().AnyAsync(x => x.Name.ToLower() == nameLowercased))
+            if (checkUniqueUserName)
             {
-                throw new UserAlreadyExistsException();
+                var nameLowercased = model.Name.ToLower();
+                if (await context.UserTexts.AsNoTracking().AnyAsync(x => x.Name.ToLower() == nameLowercased))
+                {
+                    throw new UserAlreadyExistsException();
+                }
             }
 
             context.UserTexts.Add(new UserText

@@ -3,7 +3,7 @@
 }
 @model Demo.ViewModels.UserTextsViewModel
 
-@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Index", "UserTexts", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     <h4>Enter the data:</h4>
@@ -11,7 +11,14 @@
     <div class="form-group">
         @Html.LabelFor(m => m.NewUserText.Name, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBox("Name", Model.NewUserText.Name, new { @class = "form-control" })
+            @if (Model.NewUserText.IsNameDisabled)
+            {
+                @Html.TextBox("Name", Model.NewUserText.Name, new { @class = "form-control", @readonly = "readonly" })
+            }
+            else
+            {
+                @Html.TextBox("Name", Model.NewUserText.Name, new { @class = "form-control" })
+            }
         </div>
     </div>
     <div class="form-group">

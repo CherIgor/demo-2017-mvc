@@ -25,6 +25,8 @@ namespace Demo.ViewModels
         [AllowHtml]
         public string Text { get; set; }
 
+        public bool IsNameDisabled { get; set; }
+
         public UserTextModel ViewModelToModel()
         {
             return new UserTextModel
