@@ -184,9 +184,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-Demo-20171031120125.mdf" />
-    <Content Include="App_Data\aspnet-Demo-20171031120125_log.ldf">
-      <DependentUpon>aspnet-Demo-20171031120125.mdf</DependentUpon>
+    <Content Include="App_Data\AspNetDemo2017.mdf" />
+    <Content Include="App_Data\AspNetDemo2017_log.ldf">
+      <DependentUpon>AspNetDemo2017.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
