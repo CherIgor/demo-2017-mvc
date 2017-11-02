@@ -11,7 +11,7 @@ namespace Demo.Tests.Controllers
         public void Index()
         {
             // Arrange
-            UserTextsController controller = new UserTextsController();
+            //UserTextsController controller = new UserTextsController();
 
             // Act
             //ViewResult result = controller.Index().Result as ViewResult;
