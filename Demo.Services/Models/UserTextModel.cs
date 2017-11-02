@@ -11,11 +11,9 @@ namespace Demo.Services.Models
         public string Text { get; set; }
         public DateTimeOffset Added { get; set; }
 
-        public string AddedAsString
-        {
-            get { return Added.ToString(); }
-        }
-
+        /// <summary>
+        /// Note: To reuse the same code multiple times in "Select" statements in IQueryable in the future
+        /// </summary>
         public static Expression<Func<UserText, UserTextModel>> FromEntity
         {
             get
