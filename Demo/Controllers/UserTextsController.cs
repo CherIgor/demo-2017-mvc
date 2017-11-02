@@ -9,7 +9,6 @@ using Microsoft.AspNet.Identity;
 
 namespace Demo.Controllers
 {
-    [Authorize]
     public class UserTextsController : Controller
     {
         public async Task<ActionResult> Index()
