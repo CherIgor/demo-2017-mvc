@@ -1,23 +1,28 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Web.Security;
+using Demo.Helpers;
+using Demo.Services.IServices;
 using Demo.Services.Services;
 using Demo.ViewModels;
-using Microsoft.AspNet.Identity;
 
 namespace Demo.Controllers
 {
     public class UserTextsController : Controller
     {
+        private readonly IUsersService _usersService;
+
+        public UserTextsController(IUsersService usersService)
+        {
+            _usersService = usersService;
+        }
+
         public async Task<ActionResult> Index()
         {
-            var savedName = GetNameFromCookies();
+            var savedName = CookieHelper.GetNameFromCookies(HttpContext);
 
             var res = new UserTextsViewModel
             {
-                StoredUserTexts = await UsersService.GetUserTexts(),
+                StoredUserTexts = await _usersService.GetUserTexts(),
                 NewUserText = new UserTextViewModel
                 {
                     Name = savedName,
@@ -32,7 +37,7 @@ namespace Demo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index(UserTextViewModel model)
         {
-            var savedName = GetNameFromCookies();
+            var savedName = CookieHelper.GetNameFromCookies(HttpContext);
             var isNameSaved = !string.IsNullOrEmpty(savedName);
 
             if (ModelState.IsValid)
@@ -42,19 +47,19 @@ namespace Demo.Controllers
                 var success = false;
                 try
                 {
-                    await UsersService.AddUserTextAsync(model.ViewModelToModel(), checkUniqueUserName);
+                    await _usersService.AddUserTextAsync(model.ViewModelToModel(), checkUniqueUserName);
                     success = true;
                 }
                 catch (UsersService.UserAlreadyExistsException)
                 {
-                    ModelState.AddModelError("", "User already exists");
+                    ModelState.AddModelError(string.Empty, "User already exists");
                 }
 
                 if (success)
                 {
                     if (!isNameSaved)
                     {
-                        SetNameToCookies(model.Name);
+                        CookieHelper.SetNameToCookies(Response, model.Name);
                     }
                     return RedirectToAction("Index", "UserTexts");
                 }
@@ -63,54 +68,11 @@ namespace Demo.Controllers
             model.IsNameDisabled = isNameSaved;
             var res = new UserTextsViewModel
             {
-                StoredUserTexts = await UsersService.GetUserTexts(),
+                StoredUserTexts = await _usersService.GetUserTexts(),
                 NewUserText = model
             };
 
             return View(res);
-        }
-
-        private string GetNameFromCookies()
-        {
-            string name = null;
-            var encTicket = HttpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
-            if (encTicket != null)
-            {
-                try
-                {
-                    var ticket = FormsAuthentication.Decrypt(encTicket.Value);
-                    if (ticket?.Expiration > DateTime.Now)
-                    {
-                        name = ticket.UserData;
-                    }
-                }
-                catch
-                {
-                }
-            }
-
-            return name;
-        }
-
-        private void SetNameToCookies(string name)
-        {
-            var isPersistent = true;
-            var userData = name;
-
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
-                1,
-                User.Identity.GetUserName(),
-                DateTime.Now,
-                DateTime.Now.AddMinutes(30),
-                isPersistent,
-                userData,
-                FormsAuthentication.FormsCookiePath);
-
-            // Encrypt the ticket.
-            string encTicket = FormsAuthentication.Encrypt(ticket);
-
-            // Create the cookie.
-            Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket));
         }
     }
 }

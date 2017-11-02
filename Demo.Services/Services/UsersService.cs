@@ -4,13 +4,14 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Demo.Data.Models.Entity;
+using Demo.Services.IServices;
 using Demo.Services.Models;
 
 namespace Demo.Services.Services
 {
-    public static class UsersService
+    public class UsersService : IUsersService
     {
-        public static async Task<IEnumerable<UserTextModel>> GetUserTexts()
+        public async Task<IEnumerable<UserTextModel>> GetUserTexts()
         {
             var res = await new Entities().UserTexts
                 .AsNoTracking()
@@ -20,7 +21,7 @@ namespace Demo.Services.Services
             return res;
         }
 
-        public static async Task AddUserTextAsync(UserTextModel model, bool checkUniqueUserName)
+        public async Task AddUserTextAsync(UserTextModel model, bool checkUniqueUserName)
         {
             var context = new Entities();
 

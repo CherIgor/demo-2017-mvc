@@ -9,6 +9,7 @@ namespace Demo
     {
         protected void Application_Start()
         {
+            AutofacConfig.ConfigureContainer();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
