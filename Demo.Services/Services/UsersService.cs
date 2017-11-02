@@ -13,7 +13,7 @@ namespace Demo.Services.Services
     {
         public async Task<IEnumerable<UserTextModel>> GetUserTexts()
         {
-            var res = await new Entities().UserTexts
+            var res = await new DemoContext().UserTexts
                 .AsNoTracking()
                 .OrderByDescending(x => x.Added)
                 .Select(UserTextModel.FromEntity)
@@ -23,7 +23,7 @@ namespace Demo.Services.Services
 
         public async Task AddUserTextAsync(UserTextModel model, bool checkUniqueUserName)
         {
-            var context = new Entities();
+            var context = new DemoContext();
 
             if (checkUniqueUserName)
             {
